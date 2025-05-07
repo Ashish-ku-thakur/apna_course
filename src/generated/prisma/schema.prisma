@@ -1,0 +1,119 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  STUDENT
+  INSTRUCTOR
+}
+
+enum Level {
+  BIGGNER
+  MEDIUM
+  ADVANCE
+}
+
+enum Status {
+  CREATED
+  PAID
+  FAILED
+}
+
+model User {
+  id       String  @id @default(cuid())
+  clerkId  String  @unique
+  name     String
+  email    String  @unique
+  // password String
+  imageurl String?
+  role     Role    @default(STUDENT)
+
+  createdCourses  Course[]         @relation("CourseCreator")
+  enrolledCourses EnrolledCourse[]
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  Payment   Payment[]
+}
+
+model Course {
+  id                String  @id @default(cuid())
+  courseTitle       String
+  courseDescription String?
+  courseSubtitle    String?
+  courseCategory    String?
+  courseLevel       Level
+  coursePrice       String?
+  courseThumbnail   String?
+  courseCompleted   Boolean @default(false)
+  coursePublished   Boolean @default(false)
+
+  creatorId String
+  creator   User   @relation("CourseCreator", fields: [creatorId], references: [id])
+
+  enrolledUsers EnrolledCourse[]
+  Lecture       Lecture[]
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  Payment   Payment[]
+}
+
+model EnrolledCourse {
+  id           String @id @default(cuid())
+  courseAmount String
+  status       Status
+  userId       String
+  courseId     String
+
+  user   User   @relation(fields: [userId], references: [id])
+  course Course @relation(fields: [courseId], references: [id])
+
+  enrolledAt DateTime @default(now())
+
+  @@unique([userId, courseId]) // No duplicate enrollments
+}
+
+model Payment {
+  id        String  @id @default(cuid())
+  orderId   String  @unique // Razorpay Order ID
+  paymentId String? // Razorpay Payment ID
+  status    Status // CREATED | PAID | FAILED
+  amount    String
+  currency  String  @default("INR")
+
+  userId   String
+  courseId String
+
+  user   User   @relation(fields: [userId], references: [id])
+  course Course @relation(fields: [courseId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Lecture {
+  id              String  @id @default(cuid())
+  lectureTitle    String
+  lectureVideoUrl String?
+
+  courseId String
+  course   Course  @relation(fields: [courseId], references: [id])
+  viewd    Boolean @default(false)
+  isFree   Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
