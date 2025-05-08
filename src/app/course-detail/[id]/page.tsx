@@ -13,15 +13,18 @@ const page: React.FC<CourseDetailPageParams> = async ({ params }) => {
     where: {
       id: id
     }, include: {
-      creator: {
-        select: {
-          name: true
+      creator: { select: { name: true } },
+      Lecture: true,
+      enrolledUsers: {
+        include: {
+          // course: true,
+          user: true // ✅ pure user object milega
         }
       },
-      Lecture: true,
-      
-      
+      Payment: true
     }
+
+
   })
 
   if (!course) return

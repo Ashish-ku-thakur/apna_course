@@ -1,19 +1,17 @@
 'use client'
 import editCourse from '@/actions/edit-course'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
+import { Card, CardContent, CardFooter } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Course } from '@/generated/prisma'
 import Image from 'next/image'
-import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import React, { startTransition, useActionState, useState } from 'react'
 import ReactQuill from 'react-quill-new'
 import 'react-quill-new/dist/quill.snow.css'
 import DOMPurify from "dompurify"
-import PublishCourse from './courseId/publish/PublishCourse'
 
 type CourseEditProps = {
     courseId: string,
@@ -69,11 +67,7 @@ const CourseEdit: React.FC<CourseEditProps> = ({ courseId, course }) => {
     return (
         <div className=''>
             <form onSubmit={editCourseHandler}>
-                {/* <CardHeader> */}
-                {/* <PublishCourse courseId={courseId} /> */}
-                {/* </CardHeader> */}
                 <Card className=''>
-
                     <CardContent>
                         <div className='space-y-5'>
                             <div>

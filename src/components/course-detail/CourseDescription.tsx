@@ -4,20 +4,30 @@ import CourseReactPlayer from './CourseReactPlayer';
 import { Card, CardContent, CardHeader } from '../ui/card';
 import { LocateFixed } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { getLectureById } from '@/actions/get-lecture-by-id';
+import { useAuth } from '@clerk/nextjs';
+// import { getLectureById } from '@/actions/get-lecture-by-id';
 
 type CourseDescriptionProps = {
     course: Prisma.CourseGetPayload<{
         include: {
             creator: { select: { name: true } },
             Lecture: true,
-        },
-    }>,
+            enrolledUsers: {
+                include: {
+                    // course:true,
+                    user: true // ✅ pure user object milega
+                }
+            },
+            Payment: true
+        }
+    }>;
 };
 
 const CourseDescription: React.FC<CourseDescriptionProps> = ({ course }) => {
     const [lectureId, setLectureId] = useState(course.Lecture[0]?.id ?? '');
     const [lectureData, setLectureData] = useState<Lecture | "">("")
+
+    const { userId } = useAuth();
 
     useEffect(() => {
         if (!lectureId) return;
@@ -31,24 +41,7 @@ const CourseDescription: React.FC<CourseDescriptionProps> = ({ course }) => {
 
         fetchLecture();
     }, [lectureId]);
-
-
-    // useEffect(() => {
-    //         if (!lectureId) return;
-    
-    //         const fetchLecture = async () => {
-    //             const res = await fetch(`/api/lecture/${lectureId}`, {
-    //                 method: "GET",
-    //                 // headers: { "Content-Type": "application/json" },
-    //                 // body: JSON.stringify({ lectureId:lectureId })
-    //             })
-    
-    //             const data = await res.json();
-    //             setLectureData(data)
-    //         };
-    
-    //         fetchLecture();
-    //     }, [lectureId]);
+    const isUserEnrolled = course.enrolledUsers.some((enrolled) => enrolled.user.clerkId === userId && enrolled.status === 'PAID');
 
 
     return (
@@ -71,7 +64,11 @@ const CourseDescription: React.FC<CourseDescriptionProps> = ({ course }) => {
                                 key={lecture.id}
                                 type="button"
                                 onClick={() => setLectureId(lecture.id)}
-                                className="flex items-center justify-between w-full text-left cursor-pointer"
+                                disabled={isUserEnrolled || !lecture.isFree}
+                                className={`flex items-center justify-between w-full text-left   px-2 py-1 rounded-md ${isUserEnrolled || lecture.isFree
+                                    ? 'bg-white hover:bg-gray-100 cursor-pointer'
+                                    : 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                                    }`}
                             >
                                 <div className="flex items-center gap-1">
                                     <LocateFixed size="16px" />
@@ -80,12 +77,13 @@ const CourseDescription: React.FC<CourseDescriptionProps> = ({ course }) => {
                                 <div>{lecture.isFree ? 'free' : 'paid'}</div>
                             </button>
                         ))}
+
                     </CardContent>
                 </Card>
             </section>
 
             <section>
-                <CourseReactPlayer lectureData={lectureData} />
+                <CourseReactPlayer lectureData={lectureData} course={course} isUserEnrolled={isUserEnrolled}/>
             </section>
         </div>
     );

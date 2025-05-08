@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import crypto from "crypto";
 import prisma from "@/lib/prisma-client";
 import { currentUser } from "@clerk/nextjs/server";
+import { revalidatePath } from "next/cache";
 
 const RAZORPAY_SECRET = process.env.RAZORPAY_KEY_SECRET!;
 
@@ -99,6 +100,7 @@ export async function POST(req: NextRequest) {
         status: "PAID",
       },
     });
+    revalidatePath(`course-detail/${courseId}`)
 
     return NextResponse.json({ success: true });
   } catch (error) {
@@ -108,4 +110,5 @@ export async function POST(req: NextRequest) {
       { status: 500 }
     );
   }
+
 }

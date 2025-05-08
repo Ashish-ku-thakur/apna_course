@@ -66,17 +66,19 @@ model Course {
   enrolledUsers EnrolledCourse[]
   Lecture       Lecture[]
 
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  Payment   Payment[]
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+  Payment         Payment[]
+  // LectureProgress LectureProgress[]
 }
 
 model EnrolledCourse {
-  id           String  @id @default(cuid())
+  id           String @id @default(cuid())
   courseAmount String
   status       Status
   userId       String
   courseId     String
+  // clerkId      String
 
   user   User   @relation(fields: [userId], references: [id])
   course Course @relation(fields: [courseId], references: [id])
@@ -114,6 +116,19 @@ model Lecture {
   viewd    Boolean @default(false)
   isFree   Boolean @default(false)
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+  // LectureProgress LectureProgress[]
 }
+
+// model LectureProgress {
+//   id String @id @default(cuid())
+
+//   lectureId String
+//   courseId  String
+
+//   lecture   Lecture @relation(fields: [lectureId], references: [id])
+//   course    Course  @relation(fields: [courseId], references: [id])
+
+//   viewd Boolean @default(false)
+// }

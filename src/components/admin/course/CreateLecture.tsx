@@ -3,10 +3,8 @@ import createLecture from '@/actions/create-lecture'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Loader2, SquarePen } from 'lucide-react'
+import { Loader2 } from 'lucide-react'
 import React, { useActionState, useState } from 'react'
-import ShowLectures from './ShowLectures'
-import Link from 'next/link'
 
 type CreateLectureProps = {
     courseId: string

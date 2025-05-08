@@ -7,7 +7,6 @@ type LectureIdPageParams = {
 const page: React.FC<LectureIdPageParams> = async ({ params }) => {
 
   const ids = await params
-  console.log(ids);
 
   const lecture = await prisma.lecture.findUnique({
     where: {
