@@ -6,17 +6,17 @@ import React, { useEffect, useState } from 'react'
 type CourseMetaDataProps = {
     course: Prisma.CourseGetPayload<{
         include: {
-          creator: { select: { name: true } },
-          Lecture: true,
-          enrolledUsers: {
-            include: {
-                // course:true,
-                user:true // ✅ pure user object milega
-              }
-          },
-          Payment: true
+            creator: { select: { name: true } },
+            Lecture: true,
+            enrolledUsers: {
+                include: {
+                    // course:true,
+                    user: true // ✅ pure user object milega
+                }
+            },
+            Payment: true
         }
-      }>;
+    }>;
 }
 
 const CourseMetaData: React.FC<CourseMetaDataProps> = ({ course }) => {
@@ -26,6 +26,9 @@ const CourseMetaData: React.FC<CourseMetaDataProps> = ({ course }) => {
         const date = new Date(course.createdAt)
         setFormattedDate(date.toDateString())
     }, [course.createdAt])
+
+    console.log("course->", course);
+
 
     return (
         <div className='max-w-full border-black border-2 bg-gradient-to-b from-indigo-600 to bg-violet-600'>
@@ -37,7 +40,7 @@ const CourseMetaData: React.FC<CourseMetaDataProps> = ({ course }) => {
                     <CalendarSync size={'16px'} />
                     <h4>Last UpdatesAt <span>{formattedDate}</span></h4>
                 </div>
-                <h5>Students enrolled <span>2</span></h5>
+                <h5>Students enrolled <span>{course.enrolledUsers.length ? course.enrolledUsers.length : "NA"}</span></h5>
             </div>
         </div>
     )
