@@ -171,10 +171,18 @@ exports.Prisma.LectureScalarFieldEnum = {
   lectureTitle: 'lectureTitle',
   lectureVideoUrl: 'lectureVideoUrl',
   courseId: 'courseId',
-  viewd: 'viewd',
   isFree: 'isFree',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
+};
+
+exports.Prisma.LectureProgressScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  courseId: 'courseId',
+  lectureId: 'lectureId',
+  viewed: 'viewed',
+  createdAt: 'createdAt'
 };
 
 exports.Prisma.SortOrder = {
@@ -213,7 +221,8 @@ exports.Prisma.ModelName = {
   Course: 'Course',
   EnrolledCourse: 'EnrolledCourse',
   Payment: 'Payment',
-  Lecture: 'Lecture'
+  Lecture: 'Lecture',
+  LectureProgress: 'LectureProgress'
 };
 
 /**

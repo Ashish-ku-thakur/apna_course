@@ -43,9 +43,10 @@ model User {
   createdCourses  Course[]         @relation("CourseCreator")
   enrolledCourses EnrolledCourse[]
 
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  Payment   Payment[]
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+  Payment         Payment[]
+  LectureProgress LectureProgress[]
 }
 
 model Course {
@@ -70,6 +71,7 @@ model Course {
   updatedAt       DateTime          @updatedAt
   Payment         Payment[]
   // LectureProgress LectureProgress[]
+  LectureProgress LectureProgress[]
 }
 
 model EnrolledCourse {
@@ -113,22 +115,27 @@ model Lecture {
 
   courseId String
   course   Course  @relation(fields: [courseId], references: [id])
-  viewd    Boolean @default(false)
   isFree   Boolean @default(false)
 
-  createdAt       DateTime          @default(now())
-  updatedAt       DateTime          @updatedAt
-  // LectureProgress LectureProgress[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  LectureProgress LectureProgress[]
 }
 
-// model LectureProgress {
-//   id String @id @default(cuid())
+model LectureProgress {
+  id        String @id @default(cuid())
+  userId    String
+  courseId  String
+  lectureId String
 
-//   lectureId String
-//   courseId  String
+  user    User    @relation(fields: [userId], references: [id])
+  course  Course  @relation(fields: [courseId], references: [id])
+  lecture Lecture @relation(fields: [lectureId], references: [id])
 
-//   lecture   Lecture @relation(fields: [lectureId], references: [id])
-//   course    Course  @relation(fields: [courseId], references: [id])
+  viewed Boolean @default(false) // ✅ Optional: Better than hardcoding in Lecture
 
-//   viewd Boolean @default(false)
-// }
+  createdAt DateTime @default(now())
+
+  @@unique([userId, lectureId, courseId], name: "userId_lectureId_courseId")
+}

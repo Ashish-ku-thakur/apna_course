@@ -48,7 +48,6 @@ CREATE TABLE "EnrolledCourse" (
     "userId" TEXT NOT NULL,
     "courseId" TEXT NOT NULL,
     "enrolledAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "paymentId" TEXT,
 
     CONSTRAINT "EnrolledCourse_pkey" PRIMARY KEY ("id")
 );
@@ -58,7 +57,7 @@ CREATE TABLE "Payment" (
     "id" TEXT NOT NULL,
     "orderId" TEXT NOT NULL,
     "paymentId" TEXT,
-    "status" TEXT NOT NULL,
+    "status" "Status" NOT NULL,
     "amount" TEXT NOT NULL,
     "currency" TEXT NOT NULL DEFAULT 'INR',
     "userId" TEXT NOT NULL,
@@ -75,12 +74,23 @@ CREATE TABLE "Lecture" (
     "lectureTitle" TEXT NOT NULL,
     "lectureVideoUrl" TEXT,
     "courseId" TEXT NOT NULL,
-    "viewd" BOOLEAN NOT NULL DEFAULT false,
     "isFree" BOOLEAN NOT NULL DEFAULT false,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "Lecture_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "LectureProgress" (
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "courseId" TEXT NOT NULL,
+    "lectureId" TEXT NOT NULL,
+    "viewed" BOOLEAN NOT NULL DEFAULT false,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "LectureProgress_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
@@ -95,6 +105,9 @@ CREATE UNIQUE INDEX "EnrolledCourse_userId_courseId_key" ON "EnrolledCourse"("us
 -- CreateIndex
 CREATE UNIQUE INDEX "Payment_orderId_key" ON "Payment"("orderId");
 
+-- CreateIndex
+CREATE UNIQUE INDEX "LectureProgress_userId_lectureId_courseId_key" ON "LectureProgress"("userId", "lectureId", "courseId");
+
 -- AddForeignKey
 ALTER TABLE "Course" ADD CONSTRAINT "Course_creatorId_fkey" FOREIGN KEY ("creatorId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
@@ -105,9 +118,6 @@ ALTER TABLE "EnrolledCourse" ADD CONSTRAINT "EnrolledCourse_userId_fkey" FOREIGN
 ALTER TABLE "EnrolledCourse" ADD CONSTRAINT "EnrolledCourse_courseId_fkey" FOREIGN KEY ("courseId") REFERENCES "Course"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "EnrolledCourse" ADD CONSTRAINT "EnrolledCourse_paymentId_fkey" FOREIGN KEY ("paymentId") REFERENCES "Payment"("id") ON DELETE SET NULL ON UPDATE CASCADE;
-
--- AddForeignKey
 ALTER TABLE "Payment" ADD CONSTRAINT "Payment_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
@@ -115,3 +125,12 @@ ALTER TABLE "Payment" ADD CONSTRAINT "Payment_courseId_fkey" FOREIGN KEY ("cours
 
 -- AddForeignKey
 ALTER TABLE "Lecture" ADD CONSTRAINT "Lecture_courseId_fkey" FOREIGN KEY ("courseId") REFERENCES "Course"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "LectureProgress" ADD CONSTRAINT "LectureProgress_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "LectureProgress" ADD CONSTRAINT "LectureProgress_courseId_fkey" FOREIGN KEY ("courseId") REFERENCES "Course"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "LectureProgress" ADD CONSTRAINT "LectureProgress_lectureId_fkey" FOREIGN KEY ("lectureId") REFERENCES "Lecture"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

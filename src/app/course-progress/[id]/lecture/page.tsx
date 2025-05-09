@@ -17,7 +17,16 @@ const Page: React.FC<CourseProgressPageParams> = async ({ params }) => {
         where: {
             id: id
         }, include: {
-            Lecture: true,
+            Lecture: {
+                include:{
+                    LectureProgress:true
+                }
+            },
+            // LectureProgress:{
+            //     include:{
+            //         lecture:true
+            //     }
+            // }
         }
     })
 
