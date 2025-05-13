@@ -15,7 +15,10 @@ const unPublishCourse = async (courseId: string) => {
         coursePublished: false,
       },
     });
-  } catch (error) {}
+  } catch (error) {
+     console.error("Error removing lecture:", error);
+    throw new Error("Failed to remove lecture");
+  }
 
   revalidatePath(`/admin/course/${courseId}`);
   redirect(`/admin/course/${courseId}`);

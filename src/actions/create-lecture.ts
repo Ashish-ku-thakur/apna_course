@@ -34,9 +34,6 @@ const createLecture = async (
         errors: result.error.flatten().fieldErrors,
       };
     }
-    // console.log({ lectureTitle: formData.get("lecturetitle"), co: courseId });
-
-    // create the lecture
     const createLecture = await prisma.lecture.create({
       data: {
         lectureTitle: result.data.lectureTitle,

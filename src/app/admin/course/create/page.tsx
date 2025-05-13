@@ -8,18 +8,19 @@ import { MoveLeft } from 'lucide-react'
 import Link from 'next/link'
 import React, { useActionState, useState } from 'react'
 
-const page = () => {
+const CreateCoursePage = () => {
     const [courseTitle, setTitle] = useState("")
     const [courseLevel, setLevel] = useState("")
     const arr = ['BIGGNER', 'MEDIUM', 'ADVANCE']
+    console.log(courseLevel);
 
     const [formState, formAction, isPending] = useActionState(createCourse, { errors: {} })
 
-    
+
 
     return (
         <div className='ml-12 mt-4 max-w-5xl'>
-            <h1 className='font-bold text-2xl'>Let's add course & some basic course details</h1>
+            <h1 className='font-bold text-2xl'>Let is add course & some basic course details</h1>
             <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Amet, voluptas</p>
 
             <form
@@ -98,4 +99,4 @@ const page = () => {
     )
 }
 
-export default page
+export default CreateCoursePage

@@ -1,6 +1,5 @@
 'use server'
 import prisma from "@/lib/prisma-client";
-// import { revalidatePath } from "next/cache";
 
 export async function getLectureById(lectureId: string) {
   console.log("lectureId", lectureId);
@@ -15,6 +14,5 @@ export async function getLectureById(lectureId: string) {
 
   if (!lecture) return;
 
-  // revalidatePath(`/course-detail/${lecture.courseId}`);
   return lecture;
 }

@@ -38,23 +38,7 @@ const filterSearch = async (
       }
     });
 
-//   const searchCourses = await prisma.course.findMany({
-//     where: {
-//       courseTitle: {
-//        startsWith:query,
-//        mode:"insensitive"
-//       },
-//     },
-//     include: {
-//       creator: {
-//         select: {
-//           name: true,
-//         },
-//       },
-//     },
-//   });
   if (!searchCourses) return [];
-  console.log("searchCourses->", searchCourses);
 
   return searchCourses;
 };

@@ -9,8 +9,6 @@ import { Lecture } from '@/generated/prisma'
 import { Loader2, MoveLeft } from 'lucide-react'
 import Link from 'next/link'
 import React, { startTransition, useActionState, useState } from 'react'
-import { Progress } from '@/components/ui/progress'
-import axios from "axios"
 import RemoveLecture from './RemoveLecture'
 import ReactPlayer from 'react-player'
 
@@ -23,7 +21,7 @@ const EditLecture: React.FC<EditLectureProps> = ({ lecture }) => {
     const [videoUrl, setVideoUrl] = useState<File | string | null>(lecture.lectureVideoUrl || null)
     const [isFree, setIsFree] = useState<boolean>(lecture.isFree || false)
 
-    const [formState, formAction, isPending] = useActionState(editLecture.bind(null, lecture.id, lecture.courseId), { errors: {} })
+    const [, formAction, isPending] = useActionState(editLecture.bind(null, lecture.id, lecture.courseId), { errors: {} })
 
     const fileSeleceHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0] || null

@@ -15,7 +15,9 @@ const publishCourse = async (courseId: string) => {
         coursePublished: true,
       },
     });
-  } catch (error) {}
+  } catch (error) {
+    return error
+  }
 
   revalidatePath(`/admin/course/${courseId}`);
   redirect(`/admin/course/${courseId}`);

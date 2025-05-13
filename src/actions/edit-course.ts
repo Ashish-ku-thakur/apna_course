@@ -3,7 +3,7 @@
 import prisma from "@/lib/prisma-client";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { date, z } from "zod";
+import { z } from "zod";
 import { v2 as cloudinary } from "cloudinary";
 
 cloudinary.config({

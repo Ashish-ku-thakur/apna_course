@@ -11,7 +11,7 @@ async function connectWithRetry(retries = 5, delay = 1000): Promise<void> {
       console.log("✅ Prisma connected to DB");
       return;
     } catch (error) {
-      console.log(`❌ Prisma connection failed. Retrying in ${delay}ms...`);
+      console.log(`❌ Prisma connection failed. Retrying in ${delay}ms...${error}`);
       await new Promise((res) => setTimeout(res, delay));
     }
   }

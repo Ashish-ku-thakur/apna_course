@@ -53,10 +53,6 @@ const Page = async () => {
                                 </TableRow>
                             ))
                             }
-
-
-
-
                         </TableBody>
                     </Table>
                 )

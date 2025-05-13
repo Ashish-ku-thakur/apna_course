@@ -13,7 +13,7 @@ type PublishBtnProps = {
 }
 const PublishBtn: React.FC<PublishBtnProps> = ({ lectures, course }) => {
     const actions = course.coursePublished ? unPublishCourse.bind(null, course.id) : publishCourse.bind(null, course.id)
-    const [formState, formAction, isPending] = useActionState(actions, {})
+    const [, formAction, isPending] = useActionState(actions, {})
     return (
         <form action={formAction}>
             {
@@ -23,7 +23,9 @@ const PublishBtn: React.FC<PublishBtnProps> = ({ lectures, course }) => {
                         {course.coursePublished ? "UnPublished" : "Published"}
                     </Button>
                 )
+
             }
+           
         </form>
     )
 }

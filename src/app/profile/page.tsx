@@ -1,4 +1,3 @@
-import OurCourses from '@/components/home/OurCourses'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -51,7 +50,7 @@ const page = () => {
                                     <p className="text-lg font-semibold">Edit Profile</p>
                                 </DialogTitle>
                                 <DialogDescription className="text-sm text-muted-foreground">
-                                    Make changes to your profile here. Click save when you're done.
+                                    Make changes to your profile here. Click save when you are done.
                                 </DialogDescription>
                             </DialogHeader>
 

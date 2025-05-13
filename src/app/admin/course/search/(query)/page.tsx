@@ -51,7 +51,7 @@ const Page = () => {
       const result = await filterSearch(queryParam, sortParam, categoryParam.split(","))
       setData(result)
     })
-  }, [])
+  }, [searchParams])
 
 
 

@@ -1,7 +1,7 @@
 
 
 import React from 'react'
-import { Card, CardContent, CardFooter, CardHeader } from '../ui/card'
+import { Card, CardContent,  CardHeader } from '../ui/card'
 import Image from 'next/image'
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
 import { Badge } from '../ui/badge'

@@ -12,12 +12,12 @@ type CreateLectureProps = {
 const CreateLecture: React.FC<CreateLectureProps> = ({ courseId }) => {
     const [lectureTitle, setTitle] = useState<string>("")
 
-    const [formState, formAction, isPending] = useActionState(createLecture.bind(null, courseId), { errors: {} })
+    const [, formAction, isPending] = useActionState(createLecture.bind(null, courseId), { errors: {} })
 
     return (
         <div className='px-8 mt-4'>
             <div className='mb-5'>
-                <h1 className='font-bold text-2xl'>Let's Add Lecture, add Some Basic Course Details For Your New Lecture</h1>
+                <h1 className='font-bold text-2xl'>Let is Add Lecture, add Some Basic Course Details For Your New Lecture</h1>
                 <p className='text-sm'>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quos, reiciendis.</p>
             </div>
 

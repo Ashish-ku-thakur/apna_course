@@ -10,7 +10,7 @@ type RemoveLectureProps = {
 }
 
 const RemoveLecture: React.FC<RemoveLectureProps> = ({ lecture }) => {
-    const [formState, formAction, isPending] = useActionState(removeLecture.bind(null, lecture), {})
+    const [, formAction, isPending] = useActionState(removeLecture.bind(null, lecture), {})
     return (
         <form action={formAction} className='flex items-center justify-between '>
             <div>

@@ -7,7 +7,6 @@ import { Separator } from '../ui/separator';
 import { Card, CardContent, CardHeader } from '../ui/card';
 import ReactPlayer from 'react-player';
 import { LocateFixed } from 'lucide-react';
-import { Button } from '../ui/button';
 import viewdLecture from '@/actions/viewd-lecture';
 import { LectureProgress, Prisma } from '@/generated/prisma';
 
@@ -28,7 +27,7 @@ const CourseProgressPage: React.FC<CourseProgressPageProps> = ({ course }) => {
   const searchParams = useSearchParams();
   const lectureId = searchParams.get('lectureId');
   const firstLecture = course.Lecture[0];
-  const [lectureData, setLectureData] = useState<LectureProgress | null>(null);
+  const [, setLectureData] = useState<LectureProgress | null>(null);
 
   useEffect(() => {
     if (!lectureId && firstLecture?.id) {
@@ -43,7 +42,7 @@ const CourseProgressPage: React.FC<CourseProgressPageProps> = ({ course }) => {
       setLectureData(data as LectureProgress);
     };
     fetchUpdatedLecture();
-  }, [lectureId]);
+  }, [course.id, lectureId]);
 
   const handleLectureClick = async (id: string) => {
     router.push(`/course-progress/${course.id}/lecture?lectureId=${id}`);
