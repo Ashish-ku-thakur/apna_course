@@ -2,8 +2,9 @@
 
 import createOrder from '@/actions/coursePurchase/create-order';
 import { Button } from '@/components/ui/button';
-import React, { useEffect, useState } from 'react';
+import React, { startTransition, useEffect, useState } from 'react';
 import type { RazorpayOptions, RazorpayPaymentResponse } from '../../../../types/razorpay';
+import verifyPayment from '@/actions/coursePurchase/payment-verify';
 
 type BuyCourseBtnProps = {
   courseId: string;
@@ -32,26 +33,19 @@ const BuyCourseBtn: React.FC<BuyCourseBtnProps> = ({ courseId }) => {
       currency: response.currency as string,
       order_id: response.orderId as string,
       name: response.courseName as string,
-      handler: async function (paymentResponse: RazorpayPaymentResponse) {
-        const verify = await fetch('/api/verify-payment', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          credentials: 'include',
-          body: JSON.stringify({
-            razorpay_payment_id: paymentResponse.razorpay_payment_id,
-            razorpay_order_id: paymentResponse.razorpay_order_id,
-            razorpay_signature: paymentResponse.razorpay_signature,
-            courseId,
-            amount: response.amount,
-          }),
-        });
 
-        const result = await verify.json();
-        if (result.success) {
-          alert('Payment Verified!');
-        } else {
-          alert('Payment Failed!');
-        }
+      handler: async function (paymentResponse: RazorpayPaymentResponse) {
+
+        
+        startTransition(async () => {
+          const verify = await verifyPayment(paymentResponse.razorpay_payment_id, paymentResponse.razorpay_order_id, paymentResponse.razorpay_signature, courseId, response.amount as number)
+          if (verify?.success) {
+            alert('Payment Verified!');
+          } else {
+            alert('Payment Failed!');
+          }
+        })
+
       },
       prefill: {
         name: response.userName,

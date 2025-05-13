@@ -27,6 +27,7 @@ type CourseReactPlayerProps = {
 }
 
 const CourseReactPlayer: React.FC<CourseReactPlayerProps> = ({ lectureData, course, isUserEnrolled }) => {
+    // console.log("lectureData", lectureData);
 
     if (lectureData === "") return null;
 
@@ -35,15 +36,15 @@ const CourseReactPlayer: React.FC<CourseReactPlayerProps> = ({ lectureData, cour
             <CardHeader>
                 <ReactPlayer
                     url={lectureData.lectureVideoUrl as string}
-                    controls={isUserEnrolled||lectureData.isFree}  // ✅ proper way
+                    controls={isUserEnrolled || lectureData.isFree}  // ✅ proper way
                     width="100%"
                     height="100%"
                 />
             </CardHeader>
             <CardHeader>
-                <h2>Set-up Vs Code</h2>
+                <h2 className='text-2xl font-bold'>{lectureData.lectureTitle}</h2>
                 <hr className='border-black' />
-                <div className='flex items-center gap-3 my-3 text-2xl font-bold'>
+                <div className='flex items-center gap-3 my-3 text-xl font-light'>
                     <h3 className=''>Course Price:</h3>
                     <p className='flex items-center gap-1'>
                         <IndianRupee size={'20px'} />

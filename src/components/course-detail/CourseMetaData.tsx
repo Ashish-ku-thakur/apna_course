@@ -27,7 +27,7 @@ const CourseMetaData: React.FC<CourseMetaDataProps> = ({ course }) => {
         setFormattedDate(date.toDateString())
     }, [course.createdAt])
 
-    console.log("course->", course);
+    // console.log("course->", course);
 
 
     return (
