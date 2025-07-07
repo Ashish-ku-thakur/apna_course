@@ -1,4 +1,3 @@
-// ✅ Client Component (app/components/CourseProgressPage.tsx)
 "use client";
 
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -51,22 +50,20 @@ const CourseProgressPage: React.FC<CourseProgressPageProps> = ({ course }) => {
   };
 
   const selectedLecture = course.Lecture.find(lecture => lecture.id === lectureId) || firstLecture;
-  console.log("course->", course);
-
 
   return (
-    <div className="max-w-7xl mx-auto">
-      <div className="flex items-center justify-between my-5 px-4">
-        <div>
-          <p className="font-bold text-2xl">{course.courseTitle}</p>
-        </div>
+    <div className="max-w-7xl mx-auto px-4 py-6">
+      <div className="flex items-center justify-between mb-6">
+        <h1 className="text-xl sm:text-2xl md:text-3xl font-bold">
+          {course.courseTitle}
+        </h1>
       </div>
 
-      <div className="flex flex-col md:flex-row gap-4 p-4">
-        {/* Video Section */}
-        <section className="flex-1 p-4 rounded-lg">
-          <Card>
-            <CardHeader className="relative pb-[56.25%]">
+      <div className="flex flex-col md:flex-row gap-6">
+        {/* 🎥 Video Section */}
+        <section className="flex-1 w-full">
+          <Card className="overflow-hidden">
+            <CardHeader className="relative pb-[56.25%] h-0">
               <ReactPlayer
                 url={selectedLecture?.lectureVideoUrl || ""}
                 controls
@@ -75,44 +72,47 @@ const CourseProgressPage: React.FC<CourseProgressPageProps> = ({ course }) => {
                 style={{ position: 'absolute', top: 0, left: 0 }}
               />
             </CardHeader>
+
             <CardContent>
               <Separator className="my-4 bg-black h-[1px]" />
-              <h2 className="text-xl font-semibold">{selectedLecture?.lectureTitle}</h2>
+              <h2 className="text-lg sm:text-xl font-semibold">
+                {selectedLecture?.lectureTitle}
+              </h2>
             </CardContent>
           </Card>
         </section>
 
-        {/* Lecture List Section */}
+        {/* Vertical Separator on larger screens */}
         <div className="hidden md:block">
-          <Separator orientation="vertical" className="h-full bg-black w-[2px]" />
+          <Separator orientation="vertical" className="h-full w-[2px] bg-black" />
         </div>
 
-        <section className="w-full md:w-[30%] p-4 rounded-lg">
-          <div className="text-lg font-medium">
-            <h2>Course Lectures</h2>
-            <div className="my-4 space-y-2">
-              {course.Lecture.map((lecture) => {
-                return (
-                  <ul
-                    key={lecture.id}
-                    onClick={() => handleLectureClick(lecture.id)}
-                    className={`flex items-center justify-between p-3 bg-gray-200 rounded-md cursor-pointer hover:bg-gray-300 transition ${lecture.id === lectureId && "bg-gray-400"}`}
-                  >
-                    <li className="flex items-center gap-2 truncate max-w-[220px]">
-                      <LocateFixed size={16} />
-                      {lecture.lectureTitle}
-                    </li>
-                    <span
-                      className='text-green-400'
-                    >
-                      {/* {lecture.viewed ? "watched" : "unwatched"} */}
-                      {lecture.LectureProgress[0] ?lecture.LectureProgress[0].viewed ?"watched":"unwatched" :lecture.LectureProgress && "unwatched" }
-                    </span>
-                  </ul>
-                );
-              })}
+        {/* 📜 Lecture List */}
+        <section className="w-full md:w-[30%]">
+          <h2 className="text-lg font-semibold mb-4">Course Lectures</h2>
+          <div className="space-y-2">
+            {course.Lecture.map((lecture) => {
+              const isSelected = lecture.id === lectureId;
+              const viewed = lecture.LectureProgress[0]?.viewed;
 
-            </div>
+              return (
+                <ul
+                  key={lecture.id}
+                  onClick={() => handleLectureClick(lecture.id)}
+                  className={`flex items-center justify-between p-3 rounded-md cursor-pointer transition-colors
+                    ${isSelected ? "bg-gray-400 text-white" : "bg-gray-200 hover:bg-gray-300"}
+                  `}
+                >
+                  <li className="flex items-center gap-2 truncate max-w-[220px]">
+                    <LocateFixed size={16} />
+                    {lecture.lectureTitle}
+                  </li>
+                  <span className={`text-sm font-medium ${viewed ? "text-green-500" : "text-gray-500"}`}>
+                    {viewed ? "watched" : "unwatched"}
+                  </span>
+                </ul>
+              );
+            })}
           </div>
         </section>
       </div>

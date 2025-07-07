@@ -10,9 +10,9 @@ import React, { useActionState, useState } from 'react'
 
 const CreateCoursePage = () => {
     const [courseTitle, setTitle] = useState("")
-    const [courseLevel, setLevel] = useState("")
+    const [, setLevel] = useState("")
     const arr = ['BIGGNER', 'MEDIUM', 'ADVANCE']
-    console.log(courseLevel);
+    // console.log(courseLevel);
 
     const [formState, formAction, isPending] = useActionState(createCourse, { errors: {} })
 

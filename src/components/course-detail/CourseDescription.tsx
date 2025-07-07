@@ -30,9 +30,8 @@ const CourseDescription: React.FC<CourseDescriptionProps> = ({ course }) => {
 
   useEffect(() => {
     if (!lectureId) return;
-
     startTransition(async () => {
-      const data = await getLectureById(lectureId)
+      const data = await getLectureById(lectureId);
       if (data) setLectureData(data);
     });
   }, [lectureId]);
@@ -42,59 +41,64 @@ const CourseDescription: React.FC<CourseDescriptionProps> = ({ course }) => {
   );
 
   const handleLectureIdChange = (lecId: string) => {
-    if (lecId === lectureId) return; // Avoid redundant fetch
+    if (lecId === lectureId) return;
     setLectureId(lecId);
   };
-  // console.log("lectureData->", lectureData);
-  
 
   return (
-    <div className='grid grid-cols-2 gap-10'>
-      <section>
-        <div className='space-y-3 mb-4'>
-          <h2 className='text-2xl'>Description</h2>
-          <h3>{course.courseTitle}</h3>
-        </div>
+    <div className='max-w-7xl mx-auto px-4 py-6'>
+      <div className='grid grid-cols-1 md:grid-cols-2 gap-8'>
+        {/* Left: Description + Lecture List */}
+        <section className='space-y-6'>
+          <div className='space-y-2'>
+            <h2 className='text-xl sm:text-2xl font-semibold'>Description</h2>
+            <h3 className='text-base sm:text-lg text-gray-700'>{course.courseTitle}</h3>
+          </div>
 
-        <Card>
-          <CardHeader>
-            <h2>Course-content</h2>
-            <h3>{course.Lecture.length} Lectures</h3>
-          </CardHeader>
+          <Card className='shadow-sm'>
+            <CardHeader>
+              <h2 className='text-lg font-medium'>Course Content</h2>
+              <p className='text-sm text-gray-500'>{course.Lecture.length} Lectures</p>
+            </CardHeader>
 
-          <CardContent className='space-y-2'>
-            {course.Lecture.map((lecture) => {
-              const isDisabled = !(isUserEnrolled || lecture.isFree);
-              return (
-                <button
-                  key={lecture.id}
-                  type='button'
-                  onClick={() => handleLectureIdChange(lecture.id)}
-                  disabled={isDisabled}
-                  className={`flex items-center justify-between w-full text-left px-2 py-1 rounded-md ${isDisabled
-                      ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                      : 'bg-white hover:bg-gray-100 cursor-pointer'
-                    }`}
-                >
-                  <div className='flex items-center gap-1'>
-                    <LocateFixed size='16px' />
-                    <p>{lecture.lectureTitle}</p>
-                  </div>
-                  <div>{lecture.isFree ? 'free' : 'paid'}</div>
-                </button>
-              );
-            })}
-          </CardContent>
-        </Card>
-      </section>
+            <CardContent className='space-y-2'>
+              {course.Lecture.map((lecture) => {
+                const isDisabled = !(isUserEnrolled || lecture.isFree);
+                return (
+                  <button
+                    key={lecture.id}
+                    type='button'
+                    onClick={() => handleLectureIdChange(lecture.id)}
+                    disabled={isDisabled}
+                    className={`flex items-center justify-between w-full text-left px-3 py-2 rounded-md text-sm transition-all
+                      ${isDisabled
+                        ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                        : 'bg-white hover:bg-gray-100 cursor-pointer border border-gray-200'}
+                    `}
+                  >
+                    <div className='flex items-center gap-2 truncate'>
+                      <LocateFixed size={16} />
+                      <span className='truncate'>{lecture.lectureTitle}</span>
+                    </div>
+                    <span className={`text-xs font-medium ${lecture.isFree ? 'text-green-600' : 'text-yellow-500'}`}>
+                      {lecture.isFree ? 'Free' : 'Paid'}
+                    </span>
+                  </button>
+                );
+              })}
+            </CardContent>
+          </Card>
+        </section>
 
-      <section>
-        <CourseReactPlayer
-          lectureData={lectureData}
-          course={course}
-          isUserEnrolled={isUserEnrolled}
-        />
-      </section>
+        {/* Right: React Player */}
+        <section>
+          <CourseReactPlayer
+            lectureData={lectureData}
+            course={course}
+            isUserEnrolled={isUserEnrolled}
+          />
+        </section>
+      </div>
     </div>
   );
 };

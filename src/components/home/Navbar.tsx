@@ -1,22 +1,41 @@
-import { BookOpenCheck, LayoutDashboard, LogOut, School, UserPen } from 'lucide-react'
+import { BookOpenCheck, LayoutDashboard, LogOut, Menu, School, UserPen } from 'lucide-react'
 import React from 'react'
 import Link from 'next/link'
-import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from '../ui/dropdown-menu'
+import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '../ui/dropdown-menu'
 import { Separator } from '../ui/separator'
 import { ToogleMode } from './ToogleMode'
-import { SignedIn, SignedOut, SignInButton,SignUpButton, UserButton } from '@clerk/nextjs'
+import { SignedIn, SignedOut, SignInButton, SignUpButton, UserButton } from '@clerk/nextjs'
 import { Button } from '../ui/button'
 
 const Navbar = () => {
   return (
-    <nav className=" bg-[#E2E2C9]/80 sticky top-0 z-50 shadow-sm">
+    <div className=" bg-[#E2E2C9]/80 sticky top-0 z-50 shadow-sm">
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex justify-between items-center h-16">
           {/* Left Logo */}
-          <Link href={'/'} className="flex items-center gap-3">
-            <School size={34} />
-            <h1 className="font-bold text-3xl">E-learning</h1>
-          </Link>
+          <div className="flex items-center gap-3">
+            <Link href={'/'}>
+              <School size={34} />
+            </Link>
+            <h1 className="hidden md:block font-bold text-3xl">E-learning</h1>
+
+            <div className='md:hidden'>
+              <DropdownMenu>
+                <DropdownMenuTrigger>
+                  <Menu className='w-6 h-6' />
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                  {/* <DropdownMenuLabel>My Account</DropdownMenuLabel> */}
+                  <DropdownMenuSeparator />
+                  <Link href={"/admin/course"}>
+
+                    <DropdownMenuItem>DashBoard</DropdownMenuItem>
+                  </Link>
+                  <DropdownMenuItem>Courses</DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
+          </div>
 
           {/* Right Side */}
           <div className="flex items-center gap-4">
@@ -90,7 +109,7 @@ const Navbar = () => {
           </div>
         </div>
       </div>
-    </nav>
+    </div>
   )
 }
 

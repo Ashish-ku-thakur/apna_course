@@ -1,7 +1,5 @@
-
-
 import React from 'react'
-import { Card, CardContent,  CardHeader } from '../ui/card'
+import { Card, CardContent, CardHeader } from '../ui/card'
 import Image from 'next/image'
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
 import { Badge } from '../ui/badge'
@@ -24,52 +22,50 @@ type OurCoursesProps = {
 
 const OurCourses: React.FC<OurCoursesProps> = ({ courses }) => {
     return (
-        <div className='max-w-7xl mx-auto px-4'>
-            <h1 className='font-bold text-3xl text-center my-6'>Our Courses</h1>
-            <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6'>
-                {
-                    courses.map((course) => (
-                        <Link key={course.id} href={`course-detail/${course.id}`} >
-                            <Card className='border-black border-2 py-0 my-0'>
-                                <CardHeader className='relative h-48 w-full'>
-                                    <Image
-                                        fill
-                                        className='object-cover rounded-md py-0 my-0'
-                                        alt='course-image'
-                                        src={course.courseThumbnail as string}
-                                    />
+        <div className='max-w-7xl mx-auto px-4 py-10'>
+            <h1 className='font-bold text-2xl sm:text-3xl text-center mb-8'>Our Courses</h1>
 
-                                </CardHeader>
-                                <CardContent className=' gap-3'>
-                                    <h3 className='font-medium text-lg mb-3'>{course.courseTitle}</h3>
-                                    <div className='flex items-center justify-between my-4'>
-                                        <div className='flex items-center gap-2'>
-                                            <Avatar>
-                                                <AvatarImage
-                                                    alt='user-avatar'
-                                                    src={course.creator.imageurl as string}
-                                                />
-                                                <AvatarFallback>UA</AvatarFallback>
-                                            </Avatar>
+            <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6'>
+                {courses.map((course) => (
+                    <Link key={course.id} href={`course-detail/${course.id}`}>
+                        <Card className='border border-gray-300 hover:shadow-lg transition-shadow duration-300 rounded-xl overflow-hidden'>
+                            <CardHeader className='relative h-48 w-full'>
+                                <Image
+                                    fill
+                                    className='object-cover'
+                                    alt='course-thumbnail'
+                                    src={course.courseThumbnail as string}
+                                />
+                            </CardHeader>
 
-                                            <h3 className='font-medium text-sm'>{course.creator.name}</h3>
-                                        </div>
+                            <CardContent className='p-4 flex flex-col gap-3'>
+                                <h3 className='font-semibold text-base sm:text-lg'>{course.courseTitle}</h3>
 
-                                        <div className=''>
-                                            <Badge className='rounded-full bg-violet-500'>{course.courseLevel}</Badge>
-                                        </div>
+                                <div className='flex items-center justify-between'>
+                                    <div className='flex items-center gap-2'>
+                                        <Avatar className='h-8 w-8'>
+                                            <AvatarImage
+                                                alt='user-avatar'
+                                                src={course.creator.imageurl as string}
+                                            />
+                                            <AvatarFallback>UA</AvatarFallback>
+                                        </Avatar>
+                                        <span className='text-sm font-medium'>{course.creator.name}</span>
                                     </div>
 
-                                    <p className='flex items-center'>  <span><IndianRupee size={'16px'} /></span>{course.coursePrice}</p>
+                                    <Badge className='rounded-full bg-violet-500 text-white text-xs'>
+                                        {course.courseLevel}
+                                    </Badge>
+                                </div>
 
-
-                                </CardContent>
-                            </Card>
-                        </Link>
-                    ))
-                }
+                                <p className='flex items-center gap-1 text-sm sm:text-base'>
+                                    <IndianRupee size={16} /> {course.coursePrice}
+                                </p>
+                            </CardContent>
+                        </Card>
+                    </Link>
+                ))}
             </div>
-
         </div>
     )
 }
